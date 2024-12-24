@@ -9,8 +9,12 @@ const redisPubSubKey = process.env.REDIS_PUB_SUB_KEY || "pub_sub_Key";
 
 async function processSubmission(submission: string) {
   const { data } = JSON.parse(submission);
-  console.log(`DOING SOME WORK data: ${data}...`);
-  client.publish(redisPubSubKey, JSON.stringify({ data }));
+  // console.log(`DOING SOME WORK data: ${data}...`);
+  const publish = await client.publish(
+    redisPubSubKey,
+    JSON.stringify({ data })
+  );
+  console.log({ publish });
 }
 
 async function startWorker() {
@@ -22,7 +26,9 @@ async function startWorker() {
     while (true) {
       try {
         const submission = await client.brPop(queueKey, 0);
+
         if (submission?.element) {
+          console.log({ submission });
           global = submission.element;
           await processSubmission(submission.element);
         }
