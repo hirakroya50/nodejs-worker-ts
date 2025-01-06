@@ -14,7 +14,7 @@ async function processSubmission(submission: string) {
     redisPubSubKey,
     JSON.stringify({ data })
   );
-  console.log({ publish });
+  // console.log({ publish });
 }
 
 async function startWorker() {
@@ -28,7 +28,7 @@ async function startWorker() {
         const submission = await client.brPop(queueKey, 0);
 
         if (submission?.element) {
-          console.log({ submission });
+          // console.log({ submission });
           global = submission.element;
           await processSubmission(submission.element);
         }
@@ -42,5 +42,4 @@ async function startWorker() {
     console.error("Failed to connect to Redis", error);
   }
 }
-console.log(process.env.REDIS_URL);
 startWorker();
