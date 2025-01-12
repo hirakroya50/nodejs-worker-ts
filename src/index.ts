@@ -2,10 +2,8 @@ import dotenv from "dotenv";
 dotenv.config();
 import { createClient } from "redis";
 
-const redisUrl = `redis://${process.env.REDIS_USERNAME}:${process.env.REDIS_PASSWORD}@${process.env.REDIS_HOST}:${process.env.REDIS_PORT}`;
-
 const client = createClient({
-  url: redisUrl,
+  url: process.env.REDIS_URL,
 });
 const queueKey = process.env.REDIS_QUEUE_KEY || "sub";
 const redisPubSubKey = process.env.REDIS_PUB_SUB_KEY || "pub_sub_Key";
